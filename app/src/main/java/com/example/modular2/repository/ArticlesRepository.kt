@@ -14,8 +14,6 @@ class ArticlesRepository @Inject constructor(
     private val articleDao = db.articlesDao()
 
 
-    //suspend fun getArt() = apiService.getArticles()
-
     fun get() = networkBoundResource(
         query = {
             articleDao.getAllArticles()
@@ -24,10 +22,12 @@ class ArticlesRepository @Inject constructor(
             delay(2000)
             apiService.getArticles()
         },
-        saveFetchResult = { article ->
+        saveFetchResult = { response ->
             db.withTransaction {
-                articleDao.deleteAllArticles()
-                articleDao.insertArticles(article)
+                articleDao.deleteAllArticles( )
+
+                for( article in response.body()?.articles!! )
+                    articleDao.insert( article )
             }
 
         }

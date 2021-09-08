@@ -17,7 +17,7 @@ interface ArticlesDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArticles(article: Response<ResponseArticles>)
+    suspend fun insert( article: Article )
 
 
     @Query("DELETE FROM articles")
